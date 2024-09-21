@@ -1,0 +1,122 @@
+aside {
+    height: 63vh;
+    width: 18vw;
+    display: flex;
+    justify-content: center;
+    border-radius: .8rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #DAD7CD;
+    transition: transform 0.4s ease;
+    margin-right: 2rem;
+    margin-left: 1.5rem;
+}
+
+.aside-content {
+    padding: 1rem 2rem 2rem;
+    width: inherit;
+}
+
+.scrollable {
+    height: 85%;
+    overflow-y: auto;
+    overflow-x: clip;
+}
+
+.sticky-wrapper{
+    position: sticky;
+    top: 7rem;
+    word-wrap: break-word
+}
+
+aside h3{
+    text-align: center;
+    height: 10%;
+    display: flex;
+    align-items: center;
+}
+
+aside h3 span {
+    font-size: 2ch;
+    text-transform: uppercase;
+}
+
+aside h3 a{
+    margin-top: -.2rem;
+    margin-left: 0.2rem;
+    color: #6ead6c;
+    font-size: 2rem;
+}
+
+aside ol{
+    margin-top: .5rem;
+    margin-bottom: .5rem;
+}
+
+aside ol li a{
+    color: #3A5A40;
+}
+
+aside ul li a{
+    color: #588157;
+}
+
+aside ul aside > li aside > a:hover{
+    color: #A3B18A;
+}
+
+aside form{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /*align-items: center;*/
+}
+
+aside form select {
+    padding: 0.2rem;
+    border: 1px solid #ddd;
+    border-radius: .3rem;
+    margin-top: -.2rem;
+    margin-left: .4rem;
+    box-sizing: border-box;
+    color: #3A5A40;
+}
+aside form select:focus{
+    outline: none;
+    border-color: #588157; /* Keep the border width the same, just change color */
+    background-color: #ffffff;
+}
+
+/* Hide the aside by moving it to the left */
+.aside-hidden {
+    transform: translateX(-107%); /* Move the aside mostly offscreen, but not fully */
+}
+
+/* Toggle button styling */
+#toggleAside {
+    display: none;
+}
+
+.toggle-btn {
+    position: absolute;
+    top: 50%;
+    right: -1.35rem; /* Stick out from the side */
+    transform: translateY(-50%);
+    background-color: #3A5A40;
+    color: white;
+    border: none;
+    border-radius: 0 0.5rem 0.5rem 0;
+    cursor: pointer;
+    z-index: 10;
+    transition: transform 0.4s ease, right 0.4s ease;
+    height: 10vh;
+    width: 3ch !important;
+}
+
+.toggle-btn:hover {
+    background-color: #588157;
+}
+
+#arrow {
+    font-size: 1rem;
+    transition: transform 0.4s ease;
+}

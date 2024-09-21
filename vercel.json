@@ -1,5 +1,4 @@
 {
-    "version": 2,
     "builds": [
         {
             "src": "scheduleGenerator/wsgi.py",
@@ -8,24 +7,12 @@
                 "maxLambdaSize": "15mb",
                 "runtime": "python3.11"
             }
-        },
-        {
-            "src": "build.sh",
-            "use": "@vercel/static-build",
-            "config": {
-                "distDir": "staticfiles"
-            }
         }
     ],
     "routes": [
-        {
-            "src": "/static/(.*)",
-            "dest": "/static/$1"
-        },
         {
             "src": "/(.*)",
             "dest": "scheduleGenerator/wsgi.py"
         }
     ]
-
 }
