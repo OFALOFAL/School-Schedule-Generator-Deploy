@@ -603,146 +603,145 @@ class UploadDataView(LoginRequiredMixin, View):
 
             fs.delete(file.name)
 
-            match model_name:
-                case 'classes':
-                    for index, row in df.iterrows():
-                        in_id, grade, class_signature, supervising_teacher, starting_lesson_hour_id = row.values
+            if model_name == 'classes':
+                for index, row in df.iterrows():
+                    in_id, grade, class_signature, supervising_teacher, starting_lesson_hour_id = row.values
 
-                        if not Classes.objects.filter(
-                                in_id=in_id,
-                                schedule_id=schedule,
-                                supervising_teacher_id=Teachers.objects.get(_id=supervising_teacher, schedule_id=schedule),
-                                starting_lesson_hour_id=LessonHours.objects.get(_id=starting_lesson_hour_id,
-                                                                                schedule_id=schedule),
-                                grade=grade,
-                                class_signature=class_signature
-                        ).exists():
-                            Classes.objects.create(
-                                in_id=in_id,
-                                schedule_id=schedule,
-                                supervising_teacher_id=Teachers.objects.get(_id=supervising_teacher, schedule_id=schedule),
-                                starting_lesson_hour_id=LessonHours.objects.get(_id=starting_lesson_hour_id,
-                                                                                schedule_id=schedule),
-                                grade=grade,
-                                class_signature=class_signature
-                            )
-                case 'classroom_types':
-                    for index, row in df.iterrows():
-                        in_id, description = row.values
-                        if not ClassroomTypes.objects.filter(
-                                in_id=in_id,
-                                schedule_id=schedule,
-                                description=description
-                        ).exists():
-                            ClassroomTypes.objects.create(in_id=in_id, schedule_id=schedule, description=description)
-                case 'classrooms':
-                    for index, row in df.iterrows():
-                        in_id, name, type_id = row.values
-                        if not Classrooms.objects.filter(
-                                in_id=in_id,
-                                schedule_id=schedule,
-                                name=name,
-                                type_id=ClassroomTypes.objects.get(id=type_id, schedule_id=schedule)
-                        ).exists():
-                            Classrooms.objects.create(
-                                in_id=in_id, schedule_id=schedule,
-                                name=name,
-                                type_id=ClassroomTypes.objects.get(id=type_id)
-                            )
-                case 'lesson_hours':
-                    for index, row in df.iterrows():
-                        in_id, start_hour, duration = row.values
-                        if not LessonHours.objects.filter(
-                                in_id=in_id,
-                                schedule_id=schedule,
-                                start_hour=start_hour,
-                                duration=duration
-                        ).exists():
-                            LessonHours.objects.create(
-                                in_id=in_id,
-                                schedule_id=schedule,
-                                start_hour=start_hour,
-                                duration=duration
-                            )
-                case 'subject_names':
-                    for index, row in df.iterrows():
-                        in_id, name = row.values
-                        if not SubjectNames.objects.filter(in_id=in_id, schedule_id=schedule, name=name).exists():
-                            SubjectNames.objects.create(in_id=in_id, schedule_id=schedule, name=name)
-                case 'teachers':
-                    for index, row in df.iterrows():
-                        in_id, name, surname, possible_subjects, start_hour_index, end_hour_index, days, main_classroom_id = row.values
-                        if not Teachers.objects.filter(
-                                in_id=in_id,
-                                schedule_id=schedule,
-                                main_classroom_id=Classrooms.objects.get(_id=main_classroom_id,
-                                                                         schedule_id=schedule) if main_classroom_id != 'Null' else None,
-                                end_hour_index=end_hour_index,
-                                days=days
-                        ).exists():
-                            Teachers.objects.create(
-                                in_id=in_id,
-                                schedule_id=schedule,
-                                main_classroom_id=Classrooms.objects.get(_id=main_classroom_id,
-                                                                         schedule_id=schedule) if main_classroom_id != 'Null' else None,
-                                name=name,
-                                surname=surname,
-                                possible_subjects=possible_subjects,
-                                start_hour_index=start_hour_index,
-                                end_hour_index=end_hour_index,
-                                days=days
-                            )
-                case 'subjects':
-                    for index, row in df.iterrows():
-                        (
-                            in_id,
-                            subject_name_id,
-                            classes_id,
-                            subject_count_in_week,
-                            number_of_groups,
-                            lesson_hour_id,
-                            teachers_id,
-                            classroom_id,
-                            max_stack,
-                            classroom_types
-                        ) = row.values
+                    if not Classes.objects.filter(
+                            in_id=in_id,
+                            schedule_id=schedule,
+                            supervising_teacher_id=Teachers.objects.get(_id=supervising_teacher, schedule_id=schedule),
+                            starting_lesson_hour_id=LessonHours.objects.get(_id=starting_lesson_hour_id,
+                                                                            schedule_id=schedule),
+                            grade=grade,
+                            class_signature=class_signature
+                    ).exists():
+                        Classes.objects.create(
+                            in_id=in_id,
+                            schedule_id=schedule,
+                            supervising_teacher_id=Teachers.objects.get(_id=supervising_teacher, schedule_id=schedule),
+                            starting_lesson_hour_id=LessonHours.objects.get(_id=starting_lesson_hour_id,
+                                                                            schedule_id=schedule),
+                            grade=grade,
+                            class_signature=class_signature
+                        )
+            elif model_name == 'classroom_types':
+                for index, row in df.iterrows():
+                    in_id, description = row.values
+                    if not ClassroomTypes.objects.filter(
+                            in_id=in_id,
+                            schedule_id=schedule,
+                            description=description
+                    ).exists():
+                        ClassroomTypes.objects.create(in_id=in_id, schedule_id=schedule, description=description)
+            elif model_name == 'classrooms':
+                for index, row in df.iterrows():
+                    in_id, name, type_id = row.values
+                    if not Classrooms.objects.filter(
+                            in_id=in_id,
+                            schedule_id=schedule,
+                            name=name,
+                            type_id=ClassroomTypes.objects.get(id=type_id, schedule_id=schedule)
+                    ).exists():
+                        Classrooms.objects.create(
+                            in_id=in_id, schedule_id=schedule,
+                            name=name,
+                            type_id=ClassroomTypes.objects.get(id=type_id)
+                        )
+            elif model_name == 'lesson_hours':
+                for index, row in df.iterrows():
+                    in_id, start_hour, duration = row.values
+                    if not LessonHours.objects.filter(
+                            in_id=in_id,
+                            schedule_id=schedule,
+                            start_hour=start_hour,
+                            duration=duration
+                    ).exists():
+                        LessonHours.objects.create(
+                            in_id=in_id,
+                            schedule_id=schedule,
+                            start_hour=start_hour,
+                            duration=duration
+                        )
+            elif model_name == 'subject_names':
+                for index, row in df.iterrows():
+                    in_id, name = row.values
+                    if not SubjectNames.objects.filter(in_id=in_id, schedule_id=schedule, name=name).exists():
+                        SubjectNames.objects.create(in_id=in_id, schedule_id=schedule, name=name)
+            elif model_name == 'teachers':
+                for index, row in df.iterrows():
+                    in_id, name, surname, possible_subjects, start_hour_index, end_hour_index, days, main_classroom_id = row.values
+                    if not Teachers.objects.filter(
+                            in_id=in_id,
+                            schedule_id=schedule,
+                            main_classroom_id=Classrooms.objects.get(_id=main_classroom_id,
+                                                                     schedule_id=schedule) if main_classroom_id != 'Null' else None,
+                            end_hour_index=end_hour_index,
+                            days=days
+                    ).exists():
+                        Teachers.objects.create(
+                            in_id=in_id,
+                            schedule_id=schedule,
+                            main_classroom_id=Classrooms.objects.get(_id=main_classroom_id,
+                                                                     schedule_id=schedule) if main_classroom_id != 'Null' else None,
+                            name=name,
+                            surname=surname,
+                            possible_subjects=possible_subjects,
+                            start_hour_index=start_hour_index,
+                            end_hour_index=end_hour_index,
+                            days=days
+                        )
+            elif model_name == 'subjects':
+                for index, row in df.iterrows():
+                    (
+                        in_id,
+                        subject_name_id,
+                        classes_id,
+                        subject_count_in_week,
+                        number_of_groups,
+                        lesson_hour_id,
+                        teachers_id,
+                        classroom_id,
+                        max_stack,
+                        classroom_types
+                    ) = row.values
 
-                        if not Subject.objects.filter(
-                                in_id=in_id,
-                                schedule_id=schedule,
-                                classes_id=Classes.objects.get(_id=classes_id, schedule_id=schedule),
-                                subject_name_id=SubjectNames.objects.get(_id=subject_name_id, schedule_id=schedule),
-                                lesson_hour_id=LessonHours.objects.get(_id=lesson_hour_id, schedule_id=schedule) if str(
-                                    lesson_hour_id) != 'nan' else None,
-                                teachers_id=teachers_id,
-                                classroom_id=Classrooms.objects.get(_id=classroom_id, schedule_id=schedule) if str(
-                                    classroom_id) != 'nan' else None,
-                                subject_count_in_week=subject_count_in_week,
-                                number_of_groups=number_of_groups,
-                                max_stack=max_stack,
-                                classroom_types=classroom_types
-                        ).exists():
-                            data = Subject(
-                                in_id=in_id,
-                                schedule_id=schedule,
-                                classes_id=Classes.objects.get(_id=classes_id, schedule_id=schedule),
-                                subject_name_id=SubjectNames.objects.get(_id=subject_name_id, schedule_id=schedule),
-                                lesson_hour_id=LessonHours.objects.get(_id=lesson_hour_id, schedule_id=schedule) if str(
-                                    lesson_hour_id) != 'nan' else None,
-                                teachers_id=teachers_id,
-                                classroom_id=Classrooms.objects.get(_id=classroom_id, schedule_id=schedule) if str(
-                                    classroom_id) != 'nan' else None,
-                                subject_count_in_week=subject_count_in_week,
-                                number_of_groups=number_of_groups,
-                                max_stack=max_stack,
-                                classroom_types=classroom_types
-                            )
+                    if not Subject.objects.filter(
+                            in_id=in_id,
+                            schedule_id=schedule,
+                            classes_id=Classes.objects.get(_id=classes_id, schedule_id=schedule),
+                            subject_name_id=SubjectNames.objects.get(_id=subject_name_id, schedule_id=schedule),
+                            lesson_hour_id=LessonHours.objects.get(_id=lesson_hour_id, schedule_id=schedule) if str(
+                                lesson_hour_id) != 'nan' else None,
+                            teachers_id=teachers_id,
+                            classroom_id=Classrooms.objects.get(_id=classroom_id, schedule_id=schedule) if str(
+                                classroom_id) != 'nan' else None,
+                            subject_count_in_week=subject_count_in_week,
+                            number_of_groups=number_of_groups,
+                            max_stack=max_stack,
+                            classroom_types=classroom_types
+                    ).exists():
+                        data = Subject(
+                            in_id=in_id,
+                            schedule_id=schedule,
+                            classes_id=Classes.objects.get(_id=classes_id, schedule_id=schedule),
+                            subject_name_id=SubjectNames.objects.get(_id=subject_name_id, schedule_id=schedule),
+                            lesson_hour_id=LessonHours.objects.get(_id=lesson_hour_id, schedule_id=schedule) if str(
+                                lesson_hour_id) != 'nan' else None,
+                            teachers_id=teachers_id,
+                            classroom_id=Classrooms.objects.get(_id=classroom_id, schedule_id=schedule) if str(
+                                classroom_id) != 'nan' else None,
+                            subject_count_in_week=subject_count_in_week,
+                            number_of_groups=number_of_groups,
+                            max_stack=max_stack,
+                            classroom_types=classroom_types
+                        )
 
-                            if data.check_teachers(teachers_id, schedule):
-                                data.save()
-                # TODO: zwrocic ze podana nazwa nie pasuje do zadnego modelu/tabeli
-                case _:
-                    pass
+                        if data.check_teachers(teachers_id, schedule):
+                            data.save()
+            # TODO: zwrocic ze podana nazwa nie pasuje do zadnego modelu/tabeli
+            else:
+                pass
 
         return redirect(self.request.META.get('HTTP_REFERER'))
 
