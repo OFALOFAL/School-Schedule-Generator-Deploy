@@ -7,7 +7,6 @@ This file functions for loading and operating on data
 * ### Functions
   * ### load_data
       * ***Params***:
-          * log_file_name: File, where log data is saved
           * path: path to folder with tables of type CSV or Excel
           * tables: list of files/tables
           * dtype: type of data to read, can be .xlsx/.ods (Excel file), .csv (comma-separated values), defaults to xlsx

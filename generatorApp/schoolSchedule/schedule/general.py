@@ -15,48 +15,36 @@ def create_class_schedule(days):
 
 
 def move_subject_to_day(self, class_id, day_to, day_from, subject_position,
-                        subject_to_position=-1, group=None, log_file_name=''):
+                        subject_to_position=-1, group=None):
     try:
         old = self.data[class_id][day_from][subject_position]
     except IndexError:
-        debug_log(log_file_name, f'subject pos: {subject_position}, '
-                                 f'len of day: {len(self.data[class_id][day_from])}')
         raise BaseException
 
     if old[0].is_empty:
-        debug_log(log_file_name, "ERROR: can't move empty space")
         return False
 
-    first_lesson = find_first_lesson_index(self.data[class_id][day_from], log_file_name=log_file_name)
+    first_lesson = find_first_lesson_index(self.data[class_id][day_from])
 
     if subject_position == first_lesson:
         self.data[class_id][day_from][first_lesson] = [Subject(
             is_empty=True,
             lesson_hour_id=first_lesson,
-            log_file_name=log_file_name
         )]
     elif subject_position == -1:
         self.data[class_id][day_from].pop()
     else:
         if group is None:
-            debug_log(log_file_name,
-                      "ERROR: if you want to move lesson in between other, "
-                      "specify group so ther is no empty space in schedule")
             return False
-        debug_log(log_file_name, "DEBUG: moved lesson at index diffrent than 0 or -1")
 
         old = self.data[class_id][day_from][subject_position][group - 1]
         try:
             self.data[class_id][day_from][subject_position][group - 1] = Subject(
                 is_empty=True,
                 lesson_hour_id=subject_position,
-                log_file_name=log_file_name,
                 group=group
             )
         except IndexError:
-            debug_log(log_file_name, f'ERROR: index error '
-                                     f'while trying to pop subject from subjects position at:{subject_position},'
-                                     f'check if subject exists')
             return False
 
     if subject_to_position == -1:
@@ -81,22 +69,16 @@ def move_subject_to_day(self, class_id, day_to, day_from, subject_position,
                 subject.lesson_hour_id = 0
     else:
         if not len(self.data[class_id][day_to][subject_to_position]):
-            debug_log(log_file_name, "DEBUG: moved 'old' to 0 len subject space")
             self.data[class_id][day_to][subject_to_position] = [old]
         elif self.data[class_id][day_to][subject_to_position][0].is_empty:
-            debug_log(log_file_name, "DEBUG: moved 'old' to default empty space")
             self.data[class_id][day_to][subject_to_position] = [old]
         else:
-            debug_log(log_file_name, "DEBUG: moved 'old' to occupied space")
             self.data[class_id][day_to][subject_to_position].append(old)
 
         try:
             self.data[class_id][day_to][subject_to_position][-1].lesson_hour_id = subject_to_position
         except AttributeError:
-            debug_log(log_file_name,
-                      self.data[class_id][day_to][subject_to_position], '\n',
-                      self.data[class_id][day_to][subject_to_position][-1]
-                      )
+           pass
 
     return True
 
@@ -121,7 +103,7 @@ def swap_subject_in_groups(self, group, subjects_list_x, subjects_list_y):
 
 
 def safe_move(self, teachers_id, day_from, day_to, subject_position, subject_new_position, class_id,
-              days, teachers, group=None, log_file_name=''):
+              days, teachers, group=None):
     """
     :param self: class schedule
     :param teachers_id: ids of teachers to check
@@ -133,7 +115,6 @@ def safe_move(self, teachers_id, day_from, day_to, subject_position, subject_new
     :param days: list of days
     :param teachers: list of all teachers
     :param group: class group to move
-    :param log_file_name: file name for run information
     :description: before trying to move using move_subject_to_day(), function checks if action is possible
     and notifies program
     :return: was operation successful
@@ -141,7 +122,7 @@ def safe_move(self, teachers_id, day_from, day_to, subject_position, subject_new
 
     subject_to_position = lesson_index = None
     if subject_new_position == 0:
-        first_lesson_index = find_first_lesson_index(self.data[class_id][day_to], log_file_name=log_file_name)
+        first_lesson_index = find_first_lesson_index(self.data[class_id][day_to])
 
         if first_lesson_index is None:
             subject_to_position = -1
@@ -159,10 +140,8 @@ def safe_move(self, teachers_id, day_from, day_to, subject_position, subject_new
         lesson_index = len(self.data[class_id][day_to])
 
     elif subject_new_position < find_first_lesson_index(
-            self.data[class_id][day_from],
-            log_file_name=log_file_name
+            self.data[class_id][day_from]
     ):
-        debug_log(log_file_name, f"ERROR: can't move subject before first lesson\n")
         raise BaseException
 
     old_schedule = copy.deepcopy(self.data)
@@ -185,16 +164,7 @@ def safe_move(self, teachers_id, day_from, day_to, subject_position, subject_new
                 subject_position=subject_position,
                 subject_to_position=subject_to_position,
                 group=group,
-                log_file_name=log_file_name
         ):
-            debug_log(
-                log_file_name,
-                f'ERROR: '
-                f'{class_id} '
-                f'lesson_index={lesson_index} '
-                f'day_to: {day_to} day_from: '
-                f'{day_from}'
-            )
             raise BaseException
         return True
     return False
@@ -226,11 +196,11 @@ def get_same_time_classrooms(self, day, lesson_index):
     return same_time_classrooms
 
 
-def get_stacked_lessons(self, class_id, day, group, lesson_index=0, log_file_name=''):
+def get_stacked_lessons(self, class_id, day, group, lesson_index=0):
     class_schedule = self.data[class_id][day]
 
     if lesson_index == 0:
-        lesson_index = self.find_first_lesson_index(class_schedule, log_file_name)
+        lesson_index = self.find_first_lesson_index(class_schedule)
 
     subject = class_schedule[lesson_index][group-1]
     stacked_subjects = [subject]
@@ -269,7 +239,7 @@ def find_another_grouped_lessons(self, class_id, lesson_day, lesson_index, numbe
     return possibilities
 
 
-def find_first_lesson_index(schedule_at_day, log_file_name):
+def find_first_lesson_index(schedule_at_day):
     for i, subjects in enumerate(schedule_at_day):
         for subject in subjects:
             if not subject.is_empty:
@@ -277,6 +247,6 @@ def find_first_lesson_index(schedule_at_day, log_file_name):
     return None
 
 
-def get_num_of_lessons(schedule_at_day, log_file_name):
-    first_lesson_index = find_first_lesson_index(schedule_at_day, log_file_name)
+def get_num_of_lessons(schedule_at_day):
+    first_lesson_index = find_first_lesson_index(schedule_at_day)
     return len(schedule_at_day[first_lesson_index:])

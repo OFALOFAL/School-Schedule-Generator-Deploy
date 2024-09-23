@@ -14,7 +14,7 @@ Twoje rozszerzenie będzie umieszczone w katalogu schedule/format/
 
 Najpierw otwórz szablon (template.py); oto kod wewnątrz niego:
 ```python
-def <FUNCTION NAME>(self, <PARAMETERS>, log_file_name):
+def <FUNCTION NAME>(self, <PARAMETERS>):
 	
     # don't delete
     if self.valid is False:
@@ -29,7 +29,7 @@ Ustaw nazwę funkcji, a następnie skopiuj szablon do tego katalogu i zmień jeg
 Jako parametry ustaw wszystkie dataframes i obiekty dostarczone przez funkcję format_schedule (w schedule/format/format_schedule.py).  
 np.:
 ```python
-def update_min_day_len(self, conditions, days, teachers, log_file_name):
+def update_min_day_len(self, conditions, days, teachers):
 ```
 
 Przejdź do pliku schedule/__init__.py i zaimportuj swoją funkcję do klasy w ten sposób:  
@@ -48,14 +48,12 @@ return self.update_min_day_len(
         conditions,
         days,
         teachers,
-        log_file_name
     ).add_classrooms(
         classrooms,
         teachers,
         days
     ).<FUNCTION NAME>(
         <PARAMETERS>, 
-        log_file_name
     )
 ```
 
@@ -63,7 +61,7 @@ return self.update_min_day_len(
 Jeśli masz jakiekolwiek problemy, pamiętaj, że możesz użyć każdej funkcji dostarczonej przez nas w schedule.  
 np.:
 ```python
-    self.get_num_of_lessons(schedule_at_day, log_file_name)
+    self.get_num_of_lessons(schedule_at_day)
 ```
 
 Dziękujemy za wybór naszego programu :)  

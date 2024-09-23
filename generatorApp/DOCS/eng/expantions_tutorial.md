@@ -15,7 +15,7 @@ Your expansion will be placed in schedule/format/
 
 First open a template (template.py); this is code inside of it:
 ```python
-def <FUNCTION NAME>(self, <PARAMETERS>, log_file_name):
+def <FUNCTION NAME>(self, <PARAMETERS>):
 	
     # don't delete
     if self.valid is False:
@@ -30,7 +30,7 @@ Set your function name then copy your template to that directory and rename it t
 As parameters set all the dataframes and objects provided by format_schedule function (in schedule/format/format_schedule.py).  
 e.g.:
 ```python
-def update_min_day_len(self, conditions, days, teachers, log_file_name):
+def update_min_day_len(self, conditions, days, teachers):
 ```
 
 Go to schedule/__init__.py and import your function in class like that:  
@@ -49,14 +49,12 @@ return self.update_min_day_len(
         conditions,
         days,
         teachers,
-        log_file_name
     ).add_classrooms(
         classrooms,
         teachers,
         days
     ).<FUNCTION NAME>(
         <PARAMETERS>, 
-        log_file_name
     )
 ```
 
@@ -64,7 +62,7 @@ return self.update_min_day_len(
 If you have any problems, remember that you can use every function provided by us in schedule.  
 e.g.:
 ```python
-    self.get_num_of_lessons(schedule_at_day, log_file_name)
+    self.get_num_of_lessons(schedule_at_day)
 ```
 
 Thank you for choosing our program :)  

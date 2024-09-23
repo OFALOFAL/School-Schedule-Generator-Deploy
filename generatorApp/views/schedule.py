@@ -162,7 +162,7 @@ class GenerateScheduleView(LoginRequiredMixin, View):
         data = load_data(dtype='sql', schedule=schedule)
 
         schedule_settings = ScheduleSettings.objects.get(schedule_id=schedule)
-        schedule_content = generate_schedule(data, json.loads(schedule_settings.content), log_file_name=schedule.id)
+        schedule_content = generate_schedule(data, json.loads(schedule_settings.content))
 
         if schedule_content:
             schedule.content = schedule_to_json(schedule_content)

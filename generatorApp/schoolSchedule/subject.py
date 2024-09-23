@@ -4,8 +4,7 @@ class Subject:
     """
     def __init__(self, subject_id=-1, subject_name_id=None, class_id=None, number_of_groups=0,
                  lesson_hour_id=None, teachers_id=None, classroom_id=None, is_empty=False,
-                 movable=True, group=None, max_stack=None, classroom_types=[],
-                 log_file_name=''):
+                 movable=True, group=None, max_stack=None, classroom_types=[],):
 
         if teachers_id is None:
             teachers_id = [-1]

@@ -49,7 +49,6 @@ This file contains Schedule class general functions
         * days: list of days
         * teachers: list of all teachers
         * group: class group to move
-        * log_file_name: file name for run information
 
     * Usage:
     : before trying to move using move_subject_to_day(), function checks if action is possible
@@ -80,7 +79,7 @@ This file contains Schedule class general functions
         * day: day of subject
         * group: group of subject
         * lesson_index: index of subject; if == 0 then defaults to first lesson index
-        * log_file_name: file name for run information
+
 
     * Usage:
     : check if subject reached limit of max_stack
@@ -106,7 +105,7 @@ This file contains Schedule class general functions
   * ### find_first_lesson_index
     * ***Params***:
         * schedule_at_day: schedule[class_id][day]
-        * log_file_name
+
     
     * Usage:
     : find firs lesson index as if there is an empty subject the index won't be 0
@@ -117,7 +116,7 @@ This file contains Schedule class general functions
   * ### get_num_of_lessons
     * ***Params***:
         * schedule_at_day: schedule[class_id][day]
-        * log_file_name
+
     
     * Return:
     : number of not empty lessons in a day

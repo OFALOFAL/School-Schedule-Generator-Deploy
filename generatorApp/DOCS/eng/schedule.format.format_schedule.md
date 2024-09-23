@@ -12,7 +12,6 @@ This file contains format_schedule function
       * classes_id: list of all class ids
       * days_ordered: order of days in wich lessons are added
       * days: list of days
-      * log_file_name
     
   * Usage:
   : combine every *expantion* 

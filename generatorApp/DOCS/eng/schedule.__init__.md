@@ -31,7 +31,6 @@ This file contains Schedule class
           * days_ordered: list of days but with order wich in the teachers are added in
           * subjects: split per teacher split per class subjects
           * teachers: list of teachers (obj)
-          * log_file_name: file name for run information
 
       * Return:
       : structured and logical schedule, or False if valid == False.  
@@ -40,7 +39,6 @@ This file contains Schedule class
   * ### split_to_groups
     * ***Params***:
         * days: list of days used in schedule
-        * log_file_name: file name for run information
 
     * Return:
     : schedule with split subjects

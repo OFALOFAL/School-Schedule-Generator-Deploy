@@ -33,7 +33,7 @@ class Schedule:
         """
         self.data[class_id] = class_schedule
 
-    def create(self, classes_id, classes_start_hour_index, conditions, days, days_ordered, subjects, teachers, log_file_name):
+    def create(self, classes_id, classes_start_hour_index, conditions, days, days_ordered, subjects, teachers):
         """
         :param classes_id: list of ids
         :param classes_start_hour_index: dict of hours when class starts
@@ -42,7 +42,6 @@ class Schedule:
         :param days_ordered: list of days but with order wich in the teachers are added in
         :param subjects: split per teacher split per class subjects
         :param teachers: list of teachers (obj)
-        :param log_file_name: file name for run information
         :return: structured and logical schedule
         """
 
@@ -110,7 +109,6 @@ class Schedule:
                         for sub in subjects[teacher_id][class_id]:
                             s.append((teacher_id, sub.subject_id))
                         empty = False
-            debug_log(log_file_name, f'count {count_of_subjects}, subjects: {s}')
             return empty, count_of_subjects, s
 
         def add_subjects(iteration, stack_handle):
@@ -170,7 +168,7 @@ class Schedule:
                                 last_class_id = subject.class_id
                                 last_subject_id = subject.subject_id
 
-                                first_lesson_index = self.find_first_lesson_index(self.data[class_id][day], log_file_name)
+                                first_lesson_index = self.find_first_lesson_index(self.data[class_id][day])
                                 lesson_index = len(self.data[class_id][day])
 
                                 if (first_lesson_index is None or first_lesson_index == 0) and not self.data[class_id][day]:
@@ -182,7 +180,7 @@ class Schedule:
                                         first_lesson_index is not None and first_lesson_index > 0
                                         and self.data[class_id][day][first_lesson_index-1][0].movable
                                         and (not first_iter or len(self.data[class_id][day]) < ceil(avg_day_len[class_id]))
-                                        and self.get_num_of_lessons(self.data[class_id][day], log_file_name) < conditions.data['max_lessons_per_day']
+                                        and self.get_num_of_lessons(self.data[class_id][day]) < conditions.data['max_lessons_per_day']
                                         and not self.are_teachers_taken(
                                             teachers_id=subject.teachers_id,
                                             day=day,
@@ -198,7 +196,7 @@ class Schedule:
                                             pass
                                 elif (
                                         (not first_iter or len(self.data[class_id][day]) < ceil(avg_day_len[class_id]))
-                                        and self.get_num_of_lessons(self.data[class_id][day], log_file_name) < conditions.data['max_lessons_per_day']
+                                        and self.get_num_of_lessons(self.data[class_id][day]) < conditions.data['max_lessons_per_day']
                                         and not self.are_teachers_taken(
                                             teachers_id=subject.teachers_id,
                                             day=day,
@@ -218,7 +216,6 @@ class Schedule:
                     self,
                     days,
                     capture_name=f'create_{iteration}_{day_i}_{day}',
-                    dir_name=log_file_name,
                 )
 
         for class_id in classes_id:
@@ -245,11 +242,10 @@ class Schedule:
         self.valid = False
         return self
 
-    def split_to_groups(self, days, conditions, log_file_name):
+    def split_to_groups(self, days, conditions):
         """
         :param days: list of days used in schedule
         :param conditions: conditions for schedule
-        :param log_file_name: file name for run information
         :return: schedule with split subjects
         """
 
@@ -297,7 +293,6 @@ class Schedule:
                             self,
                             days,
                             capture_name=f'splitting_{tk_capture_count}',
-                            dir_name=log_file_name,
                         )
                         tk_capture_count += 1
 
@@ -351,7 +346,6 @@ class Schedule:
                                             self,
                                             days,
                                             capture_name=f'grouping_{tk_capture_count}',
-                                            dir_name=log_file_name,
                                         )
                                         tk_capture_count += 1
                                         break

@@ -7,7 +7,6 @@ Ten plik zawiera funkcje do ładowania i operowania na danych
 * ### Funkcje
   * ### load_data
       * ***Parametry***:
-          * log_file_name: Plik, gdzie zapisane są dane dziennika
           * path: ścieżka do folderu z tabelami typu CSV lub Excel
           * tables: lista plików/tabel
           * dtype: typ danych do odczytu, może być .xlsx/.ods (plik Excel), .csv (wartości oddzielone przecinkiem), domyślnie xlsx

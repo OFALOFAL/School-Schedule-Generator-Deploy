@@ -1,5 +1,5 @@
 def format_schedule(self, conditions, days, teachers, classrooms, classes_id,
-                    classes_start_hour_index, days_ordered, log_file_name):
+                    classes_start_hour_index, days_ordered):
     if self.valid is False:
         return self
 
@@ -7,7 +7,6 @@ def format_schedule(self, conditions, days, teachers, classrooms, classes_id,
         conditions,
         days,
         teachers,
-        log_file_name
     ).add_classrooms(
         classrooms,
         teachers,

@@ -12,7 +12,6 @@ Ten plik zawiera funkcję format_schedule
       * classes_id: lista wszystkich identyfikatorów klas
       * days_ordered: kolejność dni, w których dodawane są lekcje
       * days: lista dni
-      * log_file_name
     
   * Użycie:
   : łączy każdą *ekspansję* 

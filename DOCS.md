@@ -95,13 +95,7 @@ Now we will break down all the lines that are categorized in that group
 now = datetime.now()
 time_str = now.strftime("%Y-%m-%d %H-%M-%S.%f")
 ```
-Create current time string for logging (we will take a look on logging in another chapter) 
-```python
-if not os.path.exists(f'logs/{log_file_name}'):
-    os.makedirs(f'logs/{log_file_name}')
-with open(f'logs/{log_file_name}/{log_file_name}.txt', 'w') as f:
-    pass
-```
+Create current time string for logging (we will take a look on logging in another chapter)
 This part creates directory for log files  
 ```python
 conditions = ScheduleConditions(
@@ -157,16 +151,13 @@ schedule = Schedule(
     days_ordered=days_order,
     subjects=subjects,
     teachers=teachers,
-    log_file_name=log_file_name
 ).split_to_groups(
     days,
     conditions,
-    log_file_name
 ).format_schedule(
     conditions,
     days=days,
     teachers=teachers,
-    log_file_name=log_file_name
 )
 ```
 Now we create Schedule and call all the functions that sequentially 
@@ -222,7 +213,6 @@ def generate_schedule(
     min_lessons_per_day, 
     max_lessons_per_day, 
     new_value, 
-    log_file_name
 ):
 ```
 In creating conditions object
@@ -241,7 +231,6 @@ ss = generate_schedule(
     min_lessons_per_day=7,
     max_lessons_per_day=10,
     new_value=your_value,
-    log_file_name=time_str
 )
 ```
 
@@ -392,11 +381,9 @@ return self.update_min_day_len(
         conditions,
         days,
         teachers,
-        log_file_name
     ).add_classrooms(
         classrooms,
         days,
-        log_file_name
     ).new_function()
 ```  
 and import all data that you need and is aviable in format_schedule to your function:  
@@ -404,12 +391,11 @@ and import all data that you need and is aviable in format_schedule to your func
 ).new_function(
   teachers,
   ...,
-  log_file_name
 )
 ```
 and change it in functions definition:  
 ```python
-def new_function(teachers, ..., log_file_name):
+def new_function(teachers, ...):
 ```
 For function to work first write this in your function:
 ```python
@@ -442,12 +428,12 @@ then we look only at schedule at speciffic day, this lets us get list of subject
 Then in update_min_day_len we focus on length of day for each class, so we don't loop on subjects
 (this is still possible if you need to do operations based on that)
 ```python
-while self.get_num_of_lessons(schedule_at_day, log_file_name) < \
+while self.get_num_of_lessons(schedule_at_day) < \
                     conditions.data['min_lessons_per_day']:
   
     // Code to update length of day
     
-if self.get_num_of_lessons(schedule_at_day, log_file_name) < conditions.data['min_lessons_per_day']:
+if self.get_num_of_lessons(schedule_at_day) < conditions.data['min_lessons_per_day']:
     self.valid = False
     return self
 ```
@@ -481,7 +467,6 @@ if self.safe_move(
     class_id=class_id,
     days=days,
     teachers=teachers,
-    log_file_name=log_file_name
 ):
 ```
 if that doesn't work we check and try to add first or last lesson 

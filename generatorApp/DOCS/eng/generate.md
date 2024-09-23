@@ -17,8 +17,7 @@ This file contains generate function and test usage of program
             classrooms_df  
         ] 
         ```
-        
-      * log_file_name: current time for logging
+
       * schedule_settings: dictionary of settings for schedule
     
   * Usage:
@@ -64,7 +63,6 @@ and proceede if data loaded propearly
     schedule = generate_schedule(
             data=data,
             schedule_settings=schedule_settings,
-            log_file_name=time_str
         )
 ```
 
@@ -89,14 +87,6 @@ it's important for creating day orders in later part of program.
 ```python
     min_lessons_per_day, max_lessons_per_day = schedule_settings["min_lessons_per_day"], schedule_settings["max_lessons_per_day"]
     days = schedule_settings["days"]
-```
-
-### Create directory for log files
-```python
-    if not os.path.exists(f'logs/{log_file_name}'):
-        os.makedirs(f'logs/{log_file_name}')
-    with open(f'logs/{log_file_name}/.log', 'w') as f:
-        pass
 ```
 
 ### Create global schedule conditions
@@ -149,11 +139,9 @@ we can be sure that we didn't miss anything
         days_ordered=days_order,
         subjects=subjects,
         teachers=teachers,
-        log_file_name=log_file_name
     ).split_to_groups(
         days,
         conditions,
-        log_file_name
     ).format_schedule(
         conditions,
         days=days,
@@ -162,13 +150,7 @@ we can be sure that we didn't miss anything
         classes_id=classes_id,
         classes_start_hour_index=classes_start_hour_index,
         days_ordered=days_order,
-        log_file_name=log_file_name
     )
-```
-
-### Log if schedule version was valid
-```python
-    debug_log(log_file_name, f"Version: {version}, Valid: {schedule.valid}, Day order: {days_order}")
 ```
 
 ### Brake from loop if schedule is valid
@@ -184,11 +166,10 @@ While creating schedule, functions keep track of schedule validation and set sch
     if not tkinter_schedule_vis(
         schedule=schedule,
         days=days,
-        dir_name=f'{log_file_name}',
         capture_name='FinalCapture',
         capture=True
     ):
-        debug_log(log_file_name, 'DEBUG: no tkinter generated')
+        pass
 
 ```
 

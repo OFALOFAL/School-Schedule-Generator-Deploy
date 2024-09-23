@@ -49,7 +49,6 @@ Ten plik zawiera ogólne funkcje klasy Harmonogram
         * days: lista dni
         * teachers: lista wszystkich nauczycieli
         * group: grupa klasy do przemieszczenia
-        * log_file_name: nazwa pliku dla informacji o działaniu
 
     * Użycie:
     : przed próbą przesunięcia za pomocą move_subject_to_day(), funkcja sprawdza, czy operacja jest możliwa
@@ -80,7 +79,6 @@ Ten plik zawiera ogólne funkcje klasy Harmonogram
         * day: dzień przedmiotu
         * group: grupa przedmiotu
         * lesson_index: indeks przedmiotu; jeśli == 0, to domyślnie przyjmuje pierwszy indeks lekcji
-        * log_file_name: nazwa pliku dla informacji o działaniu
 
     * Użycie:
     : sprawdza, czy przedmiot osiągnął limit max_stack
@@ -106,7 +104,6 @@ Ten plik zawiera ogólne funkcje klasy Harmonogram
   * ### find_first_lesson_index
     * ***Parametry***:
         * schedule_at_day: schedule[id_klasy][dzień]
-        * log_file_name
     
     * Użycie:
     : znajduje pierwszy indeks lekcji, jeśli jest pusty przedmiot, indeks nie będzie równy 0
@@ -117,7 +114,6 @@ Ten plik zawiera ogólne funkcje klasy Harmonogram
   * ### get_num_of_lessons
     * ***Parametry***:
         * schedule_at_day: schedule[id_klasy][dzień]
-        * log_file_name
     
     * Zwraca:
     : liczba niepustych lekcji w danym dniu
